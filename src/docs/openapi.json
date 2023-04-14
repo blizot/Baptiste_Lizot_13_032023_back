@@ -1,0 +1,819 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "HRnet API documentation",
+    "description": "Contains all available API endpoints in this codebase",
+    "termsOfService": "http://swagger.io/terms/",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Employees Module",
+      "description": "Employees operations"
+    }
+  ],
+  "paths": {
+    "/employees": {
+      "get": {
+        "tags": [
+          "Employees Module"
+        ],
+        "summary": "Fetch employees list",
+        "description": "API to fetch the list of employees",
+        "responses": {
+          "200": {
+            "description": "Employees list retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "firstName": {
+                            "type": "string"
+                          },
+                          "lastName": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "department": {
+                            "type": "string"
+                          },
+                          "birthDate": {
+                            "type": "string"
+                          },
+                          "addressStreet": {
+                            "type": "string"
+                          },
+                          "addressCity": {
+                            "type": "string"
+                          },
+                          "addressState": {
+                            "type": "string"
+                          },
+                          "addressZipCode": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employees list empty",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Employees Module"
+        ],
+        "summary": "Create an employee",
+        "description": "API to add an employee to the employees list",
+        "requestBody": {
+          "description": "employee's details",
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "startDate": {
+                    "type": "string"
+                  },
+                  "department": {
+                    "type": "string"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "addressStreet": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "addressCity": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "addressState": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "addressZipCode": {
+                    "type": "string",
+                    "default": "optional"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Employee created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "startDate": {
+                          "type": "string"
+                        },
+                        "department": {
+                          "type": "string"
+                        },
+                        "birthDate": {
+                          "type": "string"
+                        },
+                        "addressStreet": {
+                          "type": "string"
+                        },
+                        "addressCity": {
+                          "type": "string"
+                        },
+                        "addressState": {
+                          "type": "string"
+                        },
+                        "addressZipCode": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "Body"
+      }
+    },
+    "/employees/{employeeId}": {
+      "get": {
+        "tags": [
+          "Employees Module"
+        ],
+        "summary": "Fetch an employees",
+        "description": "API to fetch a specific employee",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "employee ID to fetch",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "startDate": {
+                          "type": "string"
+                        },
+                        "department": {
+                          "type": "string"
+                        },
+                        "birthDate": {
+                          "type": "string"
+                        },
+                        "addressStreet": {
+                          "type": "string"
+                        },
+                        "addressCity": {
+                          "type": "string"
+                        },
+                        "addressState": {
+                          "type": "string"
+                        },
+                        "addressZipCode": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Employee ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Employees Module"
+        ],
+        "summary": "Delete an employee",
+        "description": "API to delete an employee",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "employee ID to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employee deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Employee ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Employees Module"
+        ],
+        "summary": "Edit an employee's details",
+        "description": "API to edit an employee's details",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "employee ID to edit",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Employee's details to edit",
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "department": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "addressStreet": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "addressCity": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "addressState": {
+                    "type": "string",
+                    "default": "optional"
+                  },
+                  "addressZipCode": {
+                    "type": "string",
+                    "default": "optional"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "body": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "firstName": {
+                          "type": "string"
+                        },
+                        "lastName": {
+                          "type": "string"
+                        },
+                        "startDate": {
+                          "type": "string"
+                        },
+                        "department": {
+                          "type": "string"
+                        },
+                        "birthDate": {
+                          "type": "string"
+                        },
+                        "addressStreet": {
+                          "type": "string"
+                        },
+                        "addressCity": {
+                          "type": "string"
+                        },
+                        "addressState": {
+                          "type": "string"
+                        },
+                        "addressZipCode": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Employee ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "Body"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EmployeesRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "birthDate": {
+            "type": "string",
+            "default": "optional"
+          },
+          "addressStreet": {
+            "type": "string",
+            "default": "optional"
+          },
+          "addressCity": {
+            "type": "string",
+            "default": "optional"
+          },
+          "addressState": {
+            "type": "string",
+            "default": "optional"
+          },
+          "addressZipCode": {
+            "type": "string",
+            "default": "optional"
+          }
+        }
+      },
+      "TransactionsEditRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "default": "optional"
+          },
+          "lastName": {
+            "type": "string",
+            "default": "optional"
+          },
+          "startDate": {
+            "type": "string",
+            "default": "optional"
+          },
+          "department": {
+            "type": "string",
+            "default": "optional"
+          },
+          "birthDate": {
+            "type": "string",
+            "default": "optional"
+          },
+          "addressStreet": {
+            "type": "string",
+            "default": "optional"
+          },
+          "addressCity": {
+            "type": "string",
+            "default": "optional"
+          },
+          "addressState": {
+            "type": "string",
+            "default": "optional"
+          },
+          "addressZipCode": {
+            "type": "string",
+            "default": "optional"
+          }
+        }
+      },
+      "EmployeesResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "startDate": {
+                "type": "string"
+              },
+              "department": {
+                "type": "string"
+              },
+              "birthDate": {
+                "type": "string"
+              },
+              "addressStreet": {
+                "type": "string"
+              },
+              "addressCity": {
+                "type": "string"
+              },
+              "addressState": {
+                "type": "string"
+              },
+              "addressZipCode": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "EmployeesCollectionResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "body": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "startDate": {
+                  "type": "string"
+                },
+                "department": {
+                  "type": "string"
+                },
+                "birthDate": {
+                  "type": "string"
+                },
+                "addressStreet": {
+                  "type": "string"
+                },
+                "addressCity": {
+                  "type": "string"
+                },
+                "addressState": {
+                  "type": "string"
+                },
+                "addressZipCode": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "MessageOnlyResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
