@@ -22,12 +22,13 @@ export class EmployeesController {
   }
 
   @Get()
-  listAllEmployees() {
-    return this.employeesService.listAllEmployees();
+  async listAllEmployees() {
+    const employees = await this.employeesService.listAllEmployees();
+    return employees as object;
   }
 
   @Post()
-  createEmployee(
+  async createEmployee(
     @Body()
     completeBody: {
       firstName: string;
@@ -41,16 +42,20 @@ export class EmployeesController {
       addressZipCode: string;
     },
   ) {
-    return this.employeesService.createEmployee(completeBody);
+    const newEmployee = await this.employeesService.createEmployee(
+      completeBody,
+    );
+    return newEmployee as object;
   }
 
   @Get(':id')
-  getEmployee(@Param('id') id: string) {
-    return this.employeesService.getEmployee(id);
+  async getEmployee(@Param('id') id: string) {
+    const employee = await this.employeesService.getEmployee(id);
+    return employee as object;
   }
 
   @Patch(':id')
-  editEmployee(
+  async editEmployee(
     @Param('id') id: string,
     @Body()
     completeBody: {
@@ -65,11 +70,15 @@ export class EmployeesController {
       addressZipCode: string;
     },
   ) {
-    return this.employeesService.editEmployee(id, completeBody);
+    const editedEmployee = await this.employeesService.editEmployee(
+      id,
+      completeBody,
+    );
+    return editedEmployee as object;
   }
 
   @Delete(':id')
-  deleteEmployee(@Param('id') id: string) {
-    return this.employeesService.deleteEmployee(id);
+  async deleteEmployee(@Param('id') id: string) {
+    return await this.employeesService.deleteEmployee(id);
   }
 }

@@ -1,32 +1,36 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import { Employee } from './employee.model';
 
 @Injectable()
 export class EmployeesService {
-  private employees: Employee[] = [];
+  constructor(
+    @InjectModel('Employee') private readonly employeeModel: Model<Employee>,
+  ) {}
 
-  private findEmployee(id: string): {
-    employee: Employee;
-    employeeIndex: number;
-  } {
-    const employeeIndex = this.employees.findIndex(
-      (employee) => employee.id === id,
-    );
-    const employee = this.employees[employeeIndex];
+  private async findEmployee(id: string): Promise<Employee> {
+    let employee: Employee;
+    try {
+      employee = await this.employeeModel.findById(id).exec();
+    } catch (error) {
+      throw new NotFoundException('Invalid Employee ID.');
+    }
 
     if (!employee) {
       throw new NotFoundException("Employee ID doesn't exists.");
     }
 
-    return { employee, employeeIndex };
+    return employee;
   }
 
-  listAllEmployees() {
-    return [...this.employees];
+  async listAllEmployees() {
+    const response = await this.employeeModel.find().exec();
+    return response as Employee[];
   }
 
-  createEmployee(body: {
+  async createEmployee(body: {
     firstName: string;
     lastName: string;
     startDate: string;
@@ -37,37 +41,34 @@ export class EmployeesService {
     addressState: string;
     addressZipCode: string;
   }) {
-    const newId = `${parseInt(Math.random().toString().slice(2)) + Date.now()}`;
-
     if (!body.birthDate) body.birthDate = 'NO_DATA';
     if (!body.addressStreet) body.addressStreet = 'NO_DATA';
     if (!body.addressCity) body.addressCity = 'NO_DATA';
     if (!body.addressState) body.addressState = 'NO_DATA';
     if (!body.addressZipCode) body.addressZipCode = 'NO_DATA';
 
-    const newEmployee = new Employee(
-      newId,
-      body.firstName,
-      body.lastName,
-      body.startDate,
-      body.department,
-      body.birthDate,
-      body.addressStreet,
-      body.addressCity,
-      body.addressState,
-      body.addressZipCode,
-    );
+    const newEmployee = new this.employeeModel({
+      firstName: body.firstName,
+      lastName: body.lastName,
+      startDate: body.startDate,
+      department: body.department,
+      birthDate: body.birthDate,
+      addressStreet: body.addressStreet,
+      addressCity: body.addressCity,
+      addressState: body.addressState,
+      addressZipCode: body.addressZipCode,
+    });
 
-    this.employees.push(newEmployee);
-    return newEmployee;
+    const response = await newEmployee.save();
+    return response as Employee;
   }
 
-  getEmployee(id: string) {
-    const { employee } = this.findEmployee(id);
-    return { ...employee };
+  async getEmployee(id: string) {
+    const response = await this.findEmployee(id);
+    return response as Employee;
   }
 
-  editEmployee(
+  async editEmployee(
     id: string,
     body: {
       firstName: string;
@@ -81,8 +82,7 @@ export class EmployeesService {
       addressZipCode: string;
     },
   ) {
-    const { employee, employeeIndex } = this.findEmployee(id);
-    const employeeEdit = { ...employee };
+    const employeeEdit = await this.findEmployee(id);
 
     if (body.firstName) employeeEdit.firstName = body.firstName;
     if (body.lastName) employeeEdit.lastName = body.lastName;
@@ -94,13 +94,17 @@ export class EmployeesService {
     if (body.addressState) employeeEdit.addressState = body.addressState;
     if (body.addressZipCode) employeeEdit.addressZipCode = body.addressZipCode;
 
-    this.employees[employeeIndex] = employeeEdit;
-    return employeeEdit;
+    const response = await employeeEdit.save();
+    return response as Employee;
   }
 
-  deleteEmployee(id: string) {
-    const { employeeIndex } = this.findEmployee(id);
-    this.employees.splice(employeeIndex, 1);
+  async deleteEmployee(id: string) {
+    const response = await this.employeeModel.findByIdAndDelete(id).exec();
+
+    if (response === null) {
+      throw new NotFoundException("Employee ID doesn't exists.");
+    }
+
     return 'Employee deleted successfully';
   }
 }
