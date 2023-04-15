@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 import * as docs from './docs/openapi.json';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api/v1');
 
   SwaggerModule.setup('api/v1/docs', app, docs as any);
